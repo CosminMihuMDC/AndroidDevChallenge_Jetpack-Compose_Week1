@@ -59,6 +59,9 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation 'androidx.activity:activity-compose:1.3.0-alpha03'
 
+    // Coil.
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.6.0"
+
     // Testing.
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
