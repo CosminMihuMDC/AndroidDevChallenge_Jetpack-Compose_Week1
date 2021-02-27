@@ -5,34 +5,32 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import ro.mdc_software.mypuppy.ui.components.PuppyList
 import ro.mdc_software.mypuppy.ui.theme.MyPuppyTheme
+import ro.mdc_software.mypuppy.ui.viewmodel.PuppyListViewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel = PuppyListViewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MyPuppyTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
-                }
+                Main(viewModel)
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MyPuppyTheme {
-        Greeting("Android")
+private fun Main(viewModel: PuppyListViewModel) {
+    Surface(color = MaterialTheme.colors.background) {
+        val puppies by viewModel.puppiesLiveData.observeAsState(listOf())
+        PuppyList(puppies = puppies)
     }
 }
