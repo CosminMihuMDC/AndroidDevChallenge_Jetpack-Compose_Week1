@@ -11,8 +11,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -29,11 +31,7 @@ import ro.mdc_software.mypuppy.ui.theme.MyPuppyTheme
 fun PuppyCard(puppy: Puppy, modifier: Modifier = Modifier) {
     var descriptionVisible by remember { mutableStateOf(false) }
 
-    Card(
-        modifier = modifier
-            .padding(10.dp)
-            .clickable { descriptionVisible = !descriptionVisible }
-    ) {
+    Card(modifier = modifier.padding(10.dp)) {
         Column {
             Row {
                 puppy.image?.let {
@@ -47,11 +45,22 @@ fun PuppyCard(puppy: Puppy, modifier: Modifier = Modifier) {
                         maxLines = 1
                     )
                     Text(
-                        text = "${puppy.age} years • ${puppy.breed}",
+                        text = stringResource(
+                            id = R.string.puppies_details,
+                            puppy.age,
+                            puppy.breed
+                        ),
                         style = MaterialTheme.typography.subtitle1,
                         maxLines = 2
                     )
                 }
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_baseline_keyboard_arrow_up_24),
+                    contentDescription = "",
+                    modifier = Modifier.clickable { descriptionVisible = !descriptionVisible },
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
+                )
             }
 
             puppy.description?.let {
