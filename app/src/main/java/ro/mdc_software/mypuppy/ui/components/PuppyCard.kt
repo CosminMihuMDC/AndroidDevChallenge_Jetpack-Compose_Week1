@@ -11,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,11 +30,15 @@ import ro.mdc_software.mypuppy.ui.theme.MyPuppyTheme
 fun PuppyCard(puppy: Puppy, modifier: Modifier = Modifier) {
     var descriptionVisible by remember { mutableStateOf(false) }
 
-    Card(modifier = modifier.padding(10.dp)) {
+    Card(modifier = modifier
+        .padding(10.dp)
+        .clickable { descriptionVisible = !descriptionVisible }) {
+
         Column {
+
             Row {
                 puppy.image?.let {
-                    PuppyImage(it)
+                    PuppyImage(imageUrl = it)
                 }
 
                 Column(modifier = Modifier.padding(10.dp)) {
@@ -54,22 +57,17 @@ fun PuppyCard(puppy: Puppy, modifier: Modifier = Modifier) {
                         maxLines = 2
                     )
                 }
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_baseline_keyboard_arrow_up_24),
-                    contentDescription = "",
-                    modifier = Modifier.clickable { descriptionVisible = !descriptionVisible },
-                    colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
-                )
             }
 
             puppy.description?.let {
                 AnimatedVisibility(visible = descriptionVisible) {
-                    Text(
-                        text = it,
-                        modifier = Modifier.padding(10.dp),
-                        style = MaterialTheme.typography.caption
-                    )
+                    Column {
+                        Text(
+                            text = it,
+                            modifier = Modifier.padding(10.dp),
+                            style = MaterialTheme.typography.caption
+                        )
+                    }
                 }
             }
         }
@@ -77,9 +75,9 @@ fun PuppyCard(puppy: Puppy, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun PuppyImage(imageUrl: String) {
+private fun PuppyImage(imageUrl: String, modifier: Modifier = Modifier) {
     CoilImage(
-        modifier = Modifier
+        modifier = modifier
             .width(100.dp)
             .height(80.dp),
         data = imageUrl,
